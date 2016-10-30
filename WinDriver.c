@@ -224,3 +224,78 @@ void CNFGHandleInput()
 	}
 }
 
+
+LRESULT CALLBACK ArgsWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch(msg)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
+
+long PromptForArgs() {
+  
+	static LPSTR szClassName = "cnpPromptArgs";
+	RECT client, window;
+	WNDCLASS wnd;
+	int w, h, wd, hd;
+	HINSTANCE hInstance = GetModuleHandle(NULL);
+
+//	wnd.style = CS_HREDRAW | CS_VREDRAW; //we will explain this later
+	wnd.lpfnWndProc = ArgsWndProc;
+	wnd.cbClsExtra = 0;
+	wnd.cbWndExtra = 0;
+	wnd.hInstance = hInstance;
+	wnd.hIcon = LoadIcon(NULL, IDI_APPLICATION); //default icon
+	wnd.hCursor = LoadCursor(NULL, IDC_ARROW);   //default arrow mouse cursor
+	wnd.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
+	wnd.lpszMenuName = NULL;                     //no menu
+	wnd.lpszClassName = szClassName;
+
+	if(!RegisterClass(&wnd))                     //register the WNDCLASS
+	{
+		MessageBox(NULL, "This Program Requires Windows NT", "Error", MB_OK);
+	}
+
+	lsHWND = CreateWindow(szClassName,
+		"cnping arguments",      //name_of_window,
+		WS_OVERLAPPEDWINDOW, //basic window style
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,       //set starting point to default value
+		lsLastWidth,
+		lsLastHeight,        //set all the dimensions to default value
+		NULL,                //no parent window
+		NULL,                //no menu
+		hInstance,
+		NULL);               //no parameters to pass
+
+
+	lsWindowHDC = GetDC( lsHWND );
+	lsHDC = CreateCompatibleDC( lsWindowHDC );
+	//lsBackBitmap = CreateCompatibleBitmap( lsWindowHDC, lsLastWidth, lsLastHeight );
+	//SelectObject( lsHDC, lsBackBitmap );
+
+	//lsClearBrush = CreateSolidBrush( CNFGBGColor );
+	//lsHBR = CreateSolidBrush( 0xFFFFFF );
+	//lsHPEN = CreatePen( PS_SOLID, 0, 0xFFFFFF );
+
+	ShowWindow(lsHWND, 1);              //display the window on the screen
+
+	//Once set up... we have to change the window's borders so we get the client size right.
+  /*
+	GetClientRect( lsHWND, &client );
+	GetWindowRect( lsHWND, &window );
+	w = ( window.right - window.left);
+	h = ( window.bottom - window.top);
+	wd = w - client.right;
+	hd = h - client.bottom;
+	MoveWindow( lsHWND, window.left, window.top, lsLastWidth + wd, lsLastHeight + hd, 1 );
+
+	InternalHandleResize();
+  */
+}
+

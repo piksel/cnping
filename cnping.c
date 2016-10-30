@@ -256,6 +256,9 @@ int main( int argc, const char ** argv )
 
 	if( argc < 2 )
 	{
+#ifdef WIN32
+    return PromptForArgs();
+#else
 		ERRM( "Usage: cnping [host] [period] [extra size] [y-axis scaling]\n"
 
 			  "   [host]                 -- domain or IP address of ping target \n"
@@ -263,6 +266,7 @@ int main( int argc, const char ** argv )
 			  "   [extra size]           -- ping packet extra size (above 12), optional, default = 0 \n"
 			  "   [const y-axis scaling] -- use a fixed scaling factor instead of auto scaling (optional)\n");
 		return -1;
+#endif
 	}
 
 
