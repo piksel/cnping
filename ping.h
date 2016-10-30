@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#ifdef DEFLONG
+  typedef int32_t __LONG32;
+#endif
+
 struct sockaddr_in;
 
 unsigned short checksum(void *b, int len);
@@ -36,4 +40,3 @@ extern char errbuffer[1024];
 #endif
 
 #endif
-
